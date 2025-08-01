@@ -8,15 +8,16 @@ from .models import Driver, Car
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
-        fields = ['license_number']
+        fields = ["license_number"]
 
     def clean_license_number(self):
-        licence_number = self.cleaned_data['license_number']
+        licence_number = self.cleaned_data["license_number"]
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
         if not re.match(pattern, licence_number):
-            raise ValidationError("License number must consist of 8 characters: "
+            raise ValidationError(
+                "License number must consist of 8 characters: "
                 "first 3 uppercase letters, followed by 5 digits.")
         return licence_number
 
@@ -38,9 +39,11 @@ class DriverCreationForm(forms.ModelForm):
 
 
 class CarForm(forms.ModelForm):
-    drivers = forms.ModelMultipleChoiceField(queryset=Driver.objects.all(),
-                                             widget=forms.CheckboxSelectMultiple,
-                                             required=False)
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=Driver.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False)
+
     class Meta:
         model = Car
         fields = "__all__"
